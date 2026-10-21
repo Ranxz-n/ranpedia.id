@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#130f0f">
+
+  <title>Ranpedia.ID</title>
+  <meta name="description" content="Ranpedia.ID - Tempat Joki Terbaik!! #1">
+
+  <!-- Ikon website -->
+  <link rel="icon" type="image/png" href="Logo.png">
+  <link rel="apple-touch-icon" href="Logo.png">
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #130f0f;
+      --ink: #556fb4;
+      --accent: #970202;
+      --paper: #ffffff;
+      --text-name: #eceaf3;
+      --text-bio: #fdfcff;
+      --text-link: #231942;
+      --text-featured: #ffffff;
+      --text-footer: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 16px;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+      background: var(--bg);
+      color: var(--text-bio);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    /* Background neon */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.24;
+      z-index: -1;
+      pointer-events: none;
+      animation: backgroundFloat 9s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      background: #365edb;
+      top: -100px;
+      left: -120px;
+    }
+
+    body::after {
+      background: #b50000;
+      right: -120px;
+      bottom: -100px;
+      animation-delay: -4s;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      animation: cardEnter 0.9s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    /* Logo profil */
+    .avatar {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--ink);
+      box-shadow:
+        0 0 18px rgba(85, 111, 180, 0.35),
+        4px 4px 0 var(--ink);
+      margin-bottom: 16px;
+      animation:
+        avatarEnter 0.8s ease-out both,
+        avatarGlow 3s ease-in-out 0.8s infinite alternate;
+      transition: transform 0.35s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.08) rotate(5deg);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-name);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 18px rgba(85, 111, 180, 0.4);
+      animation: textEnter 0.7s ease-out 0.2s both;
+    }
+
+    .bio {
+      margin: 8px auto 30px;
+      max-width: 36ch;
+      font-size: 0.95rem;
+      color: var(--text-bio);
+      animation: textEnter 0.7s ease-out 0.35s both;
+    }
+
+    /* Container tombol */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Tombol utama */
+    .link {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 20px;
+
+      background: var(--paper);
+      color: var(--text-link);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 700;
+
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: 4px 5px 0 var(--ink);
+
+      -webkit-tap-highlight-color: transparent;
+
+      animation: linkEnter 0.65s cubic-bezier(.2, .8, .2, 1) both;
+
+      transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
+    }
+
+    .link:nth-child(1) { animation-delay: 0.35s; }
+    .link:nth-child(2) { animation-delay: 0.48s; }
+    .link:nth-child(3) { animation-delay: 0.61s; }
+    .link:nth-child(4) { animation-delay: 0.74s; }
+
+    /* Ikon tombol */
+    .app-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      fill: currentColor;
+      transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+    }
+
+    /* Kilauan tombol */
+    .link::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -100%;
+      width: 55%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.75),
+        transparent
+      );
+      transform: rotate(25deg);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .link:hover::before,
+    .link:focus-visible::before {
+      animation: shine 0.7s ease;
+    }
+
+    /* Tombol Order */
+    .link.featured {
+      color: var(--text-featured);
+      border-color: #c43b49;
+      background: linear-gradient(
+        120deg,
+        #790000,
+        #c00000,
+        #790000
+      );
+      background-size: 200% 200%;
+
+      box-shadow:
+        4px 5px 0 var(--ink),
+        0 0 14px rgba(151, 2, 2, 0.25);
+
+      animation:
+        linkEnter 0.65s cubic-bezier(.2, .8, .2, 1) 0.35s both,
+        featuredGlow 2.5s ease-in-out 1.2s infinite;
+    }
+
+    /* Hover dan fokus */
+    .link:hover,
+    .link:focus-visible {
+      transform: translateY(-4px) scale(1.015);
+      border-color: #8ba5f2;
+      box-shadow:
+        0 0 18px rgba(85, 111, 180, 0.4),
+        4px 8px 0 var(--ink);
+    }
+
+    .link.featured:hover,
+    .link.featured:focus-visible {
+      background-position: 100% 50%;
+      border-color: #ff7777;
+      box-shadow:
+        0 0 25px rgba(220, 0, 0, 0.5),
+        4px 8px 0 var(--ink);
+    }
+
+    .link:hover .app-icon,
+    .link:focus-visible .app-icon {
+      transform: scale(1.18) rotate(-5deg);
+      filter: drop-shadow(0 0 5px currentColor);
+    }
+
+    .link:active {
+      transform: translateY(2px) scale(0.98);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    .link:focus-visible {
+      outline: 3px solid #a9baff;
+      outline-offset: 5px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 36px;
+      font-size: 0.8rem;
+      color: var(--text-footer);
+      opacity: 0.7;
+      animation: textEnter 0.8s ease-out 1s both;
+    }
+
+    footer p {
+      margin-top: 5px;
+    }
+
+    /* Animasi masuk */
+    @keyframes cardEnter {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.97);
+        filter: blur(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes avatarEnter {
+      from {
+        opacity: 0;
+        transform: scale(0.6) rotate(-15deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    @keyframes avatarGlow {
+      from {
+        box-shadow:
+          0 0 10px rgba(85, 111, 180, 0.2),
+          4px 4px 0 var(--ink);
+      }
+      to {
+        box-shadow:
+          0 0 28px rgba(85, 111, 180, 0.65),
+          4px 4px 0 var(--ink);
+      }
+    }
+
+    @keyframes textEnter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes linkEnter {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shine {
+      from { left: -100%; }
+      to { left: 150%; }
+    }
+
+    @keyframes featuredGlow {
+      0%, 100% {
+        box-shadow:
+          4px 5px 0 var(--ink),
+          0 0 10px rgba(151, 2, 2, 0.2);
+      }
+      50% {
+        box-shadow:
+          4px 5px 0 var(--ink),
+          0 0 24px rgba(220, 0, 0, 0.48);
+      }
+    }
+
+    @keyframes backgroundFloat {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+      to {
+        transform: translate(35px, -25px) scale(1.15);
+      }
+    }
+
+    /* Responsif HP */
+    @media (max-width: 480px) {
+      body {
+        align-items: flex-start;
+        padding: 48px 20px 32px;
+      }
+
+      .card {
+        max-width: 380px;
+      }
+
+      h1 {
+        font-size: 1.65rem;
+      }
+
+      .link {
+        padding: 15px 18px;
+      }
+    }
+
+    /* Kurangi animasi sesuai pengaturan aksesibilitas */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .card,
+      .avatar,
+      h1,
+      .bio,
+      .link,
+      footer {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+
+    <!-- Logo profil -->
+    <img
+      class="avatar"
+      src="Logo.jpg"
+      alt="Logo Ranpedia.ID"
+      width="104"
+      height="104"
+    >
+
+    <h1>Ranpedia.ID</h1>
+    <p class="bio">Tempat Joki Terbaik!! #1</p>
+
+    <nav class="links" aria-label="Link utama">
+
+      <!-- Order -->
+      <a
+        class="link featured"
+        href="https://wa.me/62895412923264?text=Halo%20kak%2C%20aku%20mau%20order%20joki!!"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="app-icon" viewBox="0 0 24 24"
+             aria-hidden="true">
+          <path d="M13 2 4 14h7l-1 8 10-13h-7l1-7z"/>
+        </svg>
+        <span>Order Disini!</span>
+      </a>
+
+      <!-- Instagram -->
+     
+     <a class="link"
+        href="https://www.instagram.com/ranpedia.idz/"
+              target="_blank"
+             rel="noopener noreferrer">
+         <img class="app-icon"
+          src="instagram-logo-facebook-2-svgrepo-com.svg"
+         alt="">
+        <span>Instagram</span>
+     </a>
+
+
+      <!-- TikTok -->
+      <a
+        class="link"
+        href="https://www.tiktok.com/@ran.pedia?lang=id-ID"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="app-icon" viewBox="0 0 24 24"
+             aria-hidden="true">
+          <path d="M19.6 7.2a6.8 6.8 0 0 1-4.2-1.8v8.2a6.1 6.1 0 1 1-5.3-6.05v3.3a2.8 2.8 0 1 0 2.1 2.72V2h3.2c.3 2.3 1.8 3.8 4.2 4.1z"/>
+        </svg>
+        <span>TikTok</span>
+      </a>
+
+      <!-- Telegram -->
+      <a
+        class="link"
+        href="https://t.me/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="app-icon" viewBox="0 0 24 24"
+             aria-hidden="true">
+          <path d="M21.8 4.2 18.5 20c-.25 1.12-.9 1.4-1.82.87l-5.04-3.71-2.43 2.34c-.27.27-.5.5-1.03.5l.37-5.13 9.34-8.44c.41-.37-.09-.58-.64-.21L5.7 13.35.72 11.79c-1.08-.34-1.1-1.08.23-1.61L20.4 2.6c.9-.33 1.69.22 1.4 1.6z"/>
+        </svg>
+        <span>Telegram</span>
+      </a>
+
+    </nav>
+
+    <footer>
+      © 2026 Ranpedia.ID
+      <p>Made By Ran</p>
+    </footer>
+
+  </main>
+</body>
+</html>
